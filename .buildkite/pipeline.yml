@@ -1,6 +1,18 @@
 steps:
-  - label: ":docker: Run inside a container"
-    command: "node --version"
-    plugins:
-      - docker#v5.12.0:
-          image: "node:20-alpine"
+  - label: ":test_tube: Low-privilege tests"
+    key: "tests"
+    command: |
+      echo "This job should receive only ordinary test access."
+      ./hello.sh
+
+  - block: ":lock: Approve protected action"
+    key: "approve-protected"
+
+  - label: ":shield: Protected deployment simulation"
+    depends_on:
+      - "approve-protected"
+    command: |
+      echo "This would run only on a protected deployment queue."
+      echo "In a production design, it would have narrowly scoped credentials."
+    agents:
+      queue: "linux-medium"
