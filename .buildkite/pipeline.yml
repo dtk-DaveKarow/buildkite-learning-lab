@@ -3,12 +3,10 @@ steps:
     key: "hello"
     command: "./hello.sh"
 
-  - label: ":information_source: Show CI environment"
-    key: "environment"
+  - wait: ~
+
+  - label: ":white_check_mark: Run after hello"
+    key: "after-hello"
     command: |
-      echo "Build number: $BUILDKITE_BUILD_NUMBER"
-      echo "Build URL: $BUILDKITE_BUILD_URL"
-      echo "Repository: $BUILDKITE_REPO"
-      echo "Branch: $BUILDKITE_BRANCH"
-      echo "Commit: $BUILDKITE_COMMIT"
-      echo "Job ID: $BUILDKITE_JOB_ID"
+      echo "The earlier work completed."
+      echo "This job started after the wait barrier."
