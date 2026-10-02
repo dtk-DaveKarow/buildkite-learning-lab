@@ -8,8 +8,6 @@ steps:
 
   - label: ":test_tube: Simulated test"
     key: "test"
-    depends_on:
-      - "setup"
     command: |
       echo "Starting test at $(date -u)"
       sleep 5
