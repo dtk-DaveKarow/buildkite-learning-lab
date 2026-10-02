@@ -1,23 +1,6 @@
 steps:
-  - label: ":package: Prepare dependency bundle"
-    key: "dependencies"
-    command: |
-      mkdir -p cache
-      if [ -f cache/dependencies.txt ]; then
-        echo "Dependencies were already available."
-      else
-        echo "Simulating an expensive dependency download..."
-        sleep 15
-        echo "dependency bundle created at $(date -u)" > cache/dependencies.txt
-      fi
-      cat cache/dependencies.txt
-    artifact_paths:
-      - "cache/**/*"
-
-  - label: ":test_tube: Test with dependencies"
-    depends_on:
-      - "dependencies"
-    command: |
-      buildkite-agent artifact download "cache/dependencies.txt" .
-      echo "Testing with:"
-      cat cache/dependencies.txt
+  - label: ":docker: Run inside a container"
+    command: "node --version"
+    plugins:
+      - docker#v5.12.0:
+          image: "node:20-alpine"
