@@ -1,11 +1,5 @@
 steps:
-  - label: ":wave: Hello Buildkite"
-    key: "hello"
-    command: "./hello.sh"
-
-  - label: ":link: Explicit dependency"
-    key: "after-hello"
-    depends_on:
-      - "hello"
+  - label: ":boom: Intentional failure"
     command: |
-      echo "I depend on the hello job."
+      echo "This is an intentional test failure."
+      exit 1
