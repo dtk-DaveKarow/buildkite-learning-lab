@@ -1,5 +1,5 @@
 steps:
-  - label: ":boom: Intentional failure"
+  - label: ":white_check_mark: Fixed build"
     command: |
-      echo "This is an intentional test failure."
-      exit 1
+      echo "The command now succeeds."
+      exit 0
