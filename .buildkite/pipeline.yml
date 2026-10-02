@@ -3,10 +3,9 @@ steps:
     key: "hello"
     command: "./hello.sh"
 
-  - wait: ~
-
-  - label: ":white_check_mark: Run after hello"
+  - label: ":link: Explicit dependency"
     key: "after-hello"
+    depends_on:
+      - "hello"
     command: |
-      echo "The earlier work completed."
-      echo "This job started after the wait barrier."
+      echo "I depend on the hello job."
