@@ -1,14 +1,23 @@
 steps:
-  - label: ":snail: Simulated dependency setup"
-    key: "setup"
+  - label: ":package: Prepare dependency bundle"
+    key: "dependencies"
     command: |
-      echo "Starting setup at $(date -u)"
-      sleep 15
-      echo "Finished setup at $(date -u)"
+      mkdir -p cache
+      if [ -f cache/dependencies.txt ]; then
+        echo "Dependencies were already available."
+      else
+        echo "Simulating an expensive dependency download..."
+        sleep 15
+        echo "dependency bundle created at $(date -u)" > cache/dependencies.txt
+      fi
+      cat cache/dependencies.txt
+    artifact_paths:
+      - "cache/**/*"
 
-  - label: ":test_tube: Simulated test"
-    key: "test"
+  - label: ":test_tube: Test with dependencies"
+    depends_on:
+      - "dependencies"
     command: |
-      echo "Starting test at $(date -u)"
-      sleep 5
-      echo "Finished test at $(date -u)"
+      buildkite-agent artifact download "cache/dependencies.txt" .
+      echo "Testing with:"
+      cat cache/dependencies.txt
