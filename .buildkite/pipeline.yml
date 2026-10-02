@@ -1,21 +1,18 @@
 steps:
-  - label: ":package: Create build output"
-    key: "create-artifact"
-    command: |
-      mkdir -p dist
-      echo "Release candidate for $BUILDKITE_COMMIT" > dist/release.txt
-    artifact_paths:
-      - "dist/**/*"
-
-  - block: ":raised_hand: Approve simulated deployment"
+  - block: ":clipboard: Choose a simulated environment"
     key: "approve-deploy"
-    prompt: "Review the release artifact, then approve the simulated deployment."
+    fields:
+      - select: "Environment"
+        key: "environment"
+        options:
+          - label: "Staging"
+            value: "staging"
+          - label: "Demo"
+            value: "demo"
 
   - label: ":rocket: Simulated deployment"
     depends_on:
       - "approve-deploy"
     command: |
-      buildkite-agent artifact download "dist/release.txt" .
-      echo "Deploying:"
-      cat dist/release.txt
-      echo "No real environment was changed."
+      echo "Selected environment:"
+      buildkite-agent meta-data get "environment"
