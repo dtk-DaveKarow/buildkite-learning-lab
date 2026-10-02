@@ -1,38 +1,14 @@
 steps:
-  - label: ":hammer: Build"
-    key: "build"
+  - label: ":wave: Hello Buildkite"
+    key: "hello"
+    command: "./hello.sh"
+
+  - label: ":information_source: Show CI environment"
+    key: "environment"
     command: |
-      echo "Build the rocket"
-      mkdir -p dist
-      echo "Buildkite learning lab build ${BUILDKITE_BUILD_NUMBER}" > dist/build-info.txt
-    artifact_paths:
-      - "dist/**/*"
-
-  - label: ":test_tube: Test"
-    key: "test"
-    depends_on:
-      - "build"
-    command: |
-      echo "Test the rocket"
-      test -f README.md
-      test -f LICENSE
-      test -f .buildkite/pipeline.yml
-      echo "Repository checks passed."
-
-  - wait: ~
-
-  - label: ":rocket: Deploy"
-    key: "deploy"
-    command: |
-      echo "Launch the rocket"
-      cat <<EOF | buildkite-agent annotate \
-        --style "success" \
-        --context "learning-lab-deploy"
-      ## 🚀 Simulated deployment succeeded
-
-      - **Build:** ${BUILDKITE_BUILD_NUMBER}
-      - **Branch:** ${BUILDKITE_BRANCH}
-      - **Commit:** ${BUILDKITE_COMMIT}
-
-      No external system was changed.
-      EOF
+      echo "Build number: $BUILDKITE_BUILD_NUMBER"
+      echo "Build URL: $BUILDKITE_BUILD_URL"
+      echo "Repository: $BUILDKITE_REPO"
+      echo "Branch: $BUILDKITE_BRANCH"
+      echo "Commit: $BUILDKITE_COMMIT"
+      echo "Job ID: $BUILDKITE_JOB_ID"
